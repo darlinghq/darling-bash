@@ -177,7 +177,7 @@ time_t shell_start_time;
 int running_under_emacs;
 
 /* The name of the .(shell)rc file. */
-static char *bashrc_file = "~/.bashrc";
+static char *bashrc_file = "~/.dshellrc";
 
 /* Non-zero means to act more like the Bourne shell on startup. */
 static int act_like_sh;
