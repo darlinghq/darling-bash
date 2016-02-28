@@ -7,3 +7,10 @@ fi
 if [ "${BASH-no}" != "no" ]; then
 	[ -r /etc/bashrc ] && . /etc/bashrc
 fi
+
+if [ -d /etc/profile.d ]; then
+        for sh in /etc/profile.d/*.sh ; do
+            [ -r "$sh" ] && . "$sh"
+        done
+        unset sh
+fi
