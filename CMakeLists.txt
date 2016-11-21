@@ -281,3 +281,11 @@ InstallSymlink(bash libexec/darling/bin/sh)
 
 install(FILES bashrc profile DESTINATION libexec/darling/etc)
 
+set(man1
+	bash-3.2/doc/bash.1
+	bash-3.2/doc/bashbug.1
+	bash-3.2/doc/builtins.1
+	bash-3.2/doc/rbash.1
+)
+
+install(FILES ${man1} DESTINATION libexec/darling/usr/share/man/man1)
