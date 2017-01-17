@@ -13,11 +13,6 @@ add_definitions(-D__APPLE__ -D__DYNAMIC__ -U__linux__)
 add_definitions(-D__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__=1080)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdinc -D__DARWIN_UNIX03 -fPIC -w -ggdb -O0")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -nostdlib -Wl,--version-script=${DARLING_TOP_DIRECTORY}/darwin.map")
-
-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/darling")
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DM_UNIX -DIN_LIBINTL -DMACOSX -DSHELL -DSSH_SOURCE_BASHRC)
@@ -32,8 +27,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2/lib)
-include_directories(${DARLING_TOP_DIRECTORY}/src/libc/gen)
-include_directories(${DARLING_TOP_DIRECTORY}/src/ncurses/include)
+include_directories(${CMAKE_SOURCE_DIR}/src/libc/gen)
+include_directories(${CMAKE_SOURCE_DIR}/src/ncurses/include)
 BISON_TARGET(MyParser bash-3.2/parse.y ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c)
 
 set(bash_SRCS
