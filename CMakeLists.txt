@@ -156,13 +156,13 @@ set(bash_SRCS
 	bash-3.2/lib/intl/relocatable.c
 	bash-3.2/lib/intl/textdomain.c
 
-	bash-3.2/lib/malloc/alloca.c
-	bash-3.2/lib/malloc/malloc.c
-	bash-3.2/lib/malloc/stats.c
-	bash-3.2/lib/malloc/stub.c
-	bash-3.2/lib/malloc/table.c
-	bash-3.2/lib/malloc/trace.c
-	bash-3.2/lib/malloc/watch.c
+	#bash-3.2/lib/malloc/alloca.c
+	#bash-3.2/lib/malloc/malloc.c
+	#bash-3.2/lib/malloc/stats.c
+	#bash-3.2/lib/malloc/stub.c
+	#bash-3.2/lib/malloc/table.c
+	#bash-3.2/lib/malloc/trace.c
+	#bash-3.2/lib/malloc/watch.c
 	bash-3.2/lib/malloc/xmalloc.c
 
 	bash-3.2/lib/readline/bind.c
