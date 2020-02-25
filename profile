@@ -1,5 +1,9 @@
 # System-wide .profile for sh(1)
 
+if [ ! -d ~/Library ]; then
+        cp -r "/System/Library/User Template/Library" ~/
+fi
+
 if [ -x /usr/libexec/path_helper ]; then
 	eval `/usr/libexec/path_helper -s`
 fi
