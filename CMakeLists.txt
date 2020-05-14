@@ -24,8 +24,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bash-3.2/lib)
-include_directories(${CMAKE_SOURCE_DIR}/src/libc/gen)
-include_directories(${CMAKE_SOURCE_DIR}/src/ncurses/include)
 BISON_TARGET(MyParser bash-3.2/parse.y ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c)
 
 set(bash_SRCS
