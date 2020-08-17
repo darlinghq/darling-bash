@@ -63,7 +63,7 @@
 #endif
 
 /* Default primary and secondary prompt strings. */
-#define PPROMPT "Darling [\\w]\\$ "
+#define PPROMPT "\\s-\\v\\$ "
 #define SPROMPT "> "
 
 /* Undefine this if you don't want the ksh-compatible behavior of reprinting
@@ -73,7 +73,7 @@
 #define KSH_COMPATIBLE_SELECT
 
 /* System-wide .bashrc file for interactive shells. */
-//#define SYS_BASHRC "/etc/bashrc"
+/* #define SYS_BASHRC "/etc/bash.bashrc" */
 
 /* System-wide .bash_logout for login shells. */
 /* #define SYS_BASH_LOGOUT "/etc/bash.bash_logout" */

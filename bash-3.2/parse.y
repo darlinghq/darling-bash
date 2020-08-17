@@ -3098,7 +3098,7 @@ cond_error ()
   char *etext;
 
   if (EOF_Reached && cond_token != COND_ERROR)		/* [[ */
-    parser_error (cond_lineno, _("unexpected EOF while looking for `]]'"));
+    parser_error (cond_lineno, "%s", _("unexpected EOF while looking for `]]'"));
   else if (cond_token != COND_ERROR)
     {
       if (etext = error_token_from_token (cond_token))
@@ -3107,7 +3107,7 @@ cond_error ()
 	  free (etext);
 	}
       else
-	parser_error (cond_lineno, _("syntax error in conditional expression"));
+	parser_error (cond_lineno, "%s", _("syntax error in conditional expression"));
     }
 }
 
@@ -3189,7 +3189,7 @@ cond_term ()
 	      free (etext);
 	    }
 	  else
-	    parser_error (lineno, _("expected `)'"));
+	    parser_error (lineno, "%s", _("expected `)'"));
 	  COND_RETURN_ERROR ();
 	}
       term = make_cond_node (COND_EXPR, (WORD_DESC *)NULL, term, (COND_COM *)NULL);
@@ -3221,7 +3221,7 @@ cond_term ()
 	      free (etext);
 	    }
 	  else
-	    parser_error (line_number, _("unexpected argument to conditional unary operator"));
+	    parser_error (line_number, "%s", _("unexpected argument to conditional unary operator"));
 	  COND_RETURN_ERROR ();
 	}
 
@@ -3265,7 +3265,7 @@ cond_term ()
 	      free (etext);
 	    }
 	  else
-	    parser_error (line_number, _("conditional binary operator expected"));
+	    parser_error (line_number, "%s", _("conditional binary operator expected"));
 	  dispose_cond_node (tleft);
 	  COND_RETURN_ERROR ();
 	}
@@ -3286,7 +3286,7 @@ cond_term ()
 	      free (etext);
 	    }
 	  else
-	    parser_error (line_number, _("unexpected argument to conditional binary operator"));
+	    parser_error (line_number, "%s", _("unexpected argument to conditional binary operator"));
 	  dispose_cond_node (tleft);
 	  dispose_word (op);
 	  COND_RETURN_ERROR ();
@@ -4060,7 +4060,7 @@ decode_prompt_string (string)
 #if defined (PROMPT_STRING_DECODE)
   int result_size, result_index;
   int c, n, i;
-  char *temp, octal_string[4];
+  char *temp, *t_host, octal_string[4];
   struct tm *tm;  
   time_t the_time;
   char timebuf[128];
@@ -4205,7 +4205,11 @@ decode_prompt_string (string)
 
 	    case 's':
 	      temp = base_pathname (shell_name);
-	      temp = savestring (temp);
+	      /* Try to quote anything the user can set in the file system */
+	      if (promptvars || posixly_correct)
+		temp = sh_backslash_quote_for_double_quotes (temp);
+	      else
+		temp = savestring (temp);
 	      goto add_string;
 
 	    case 'v':
@@ -4285,9 +4289,17 @@ decode_prompt_string (string)
 
 	    case 'h':
 	    case 'H':
-	      temp = savestring (current_host_name);
-	      if (c == 'h' && (t = (char *)strchr (temp, '.')))
+	      t_host = savestring (current_host_name);
+	      if (c == 'h' && (t = (char *)strchr (t_host, '.')))
 		*t = '\0';
+	      if (promptvars || posixly_correct)
+		/* Make sure that expand_prompt_string is called with a
+		   second argument of Q_DOUBLE_QUOTES if we use this
+		   function here. */
+		temp = sh_backslash_quote_for_double_quotes (t_host);
+	      else
+		temp = savestring (t_host);
+	      free (t_host);
 	      goto add_string;
 
 	    case '#':
@@ -4806,7 +4818,7 @@ parse_compound_assignment (retlenp)
 	{
 	  current_token = tok;	/* for error reporting */
 	  if (tok == yacc_EOF)	/* ( */
-	    parser_error (orig_line_number, _("unexpected EOF while looking for matching `)'"));
+	    parser_error (orig_line_number, "%s", _("unexpected EOF while looking for matching `)'"));
 	  else
 	    yyerror(NULL);	/* does the right thing */
 	  if (wl)

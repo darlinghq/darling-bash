@@ -45,6 +45,7 @@
 
 #if defined(__APPLE__)
 #include <get_compat.h>
+#include <rootless.h>
 #endif /* __APPLE__ */
 
 #include "bashintl.h"
@@ -177,7 +178,7 @@ time_t shell_start_time;
 int running_under_emacs;
 
 /* The name of the .(shell)rc file. */
-static char *bashrc_file = "~/.dshellrc";
+static char *bashrc_file = "~/.bashrc";
 
 /* Non-zero means to act more like the Bourne shell on startup. */
 static int act_like_sh;
@@ -488,6 +489,10 @@ main (argc, argv, env)
     if (-1 == setreuid(ruid, euid))
       internal_error( _("setreuid(%u,%u) failed: %s"), ruid, euid, strerror(errno));   
   }
+  int rootless = rootless_restricted_environment();
+  if (-1 == rootless)
+    internal_error( _("Unable to determine rootless status: %s"), strerror(errno));
+  running_setuid |= rootless;
 #else  /* !__APPLE__ */
   if (running_setuid && privileged_mode == 0)
     disable_priv_mode ();
@@ -733,6 +738,21 @@ main (argc, argv, env)
 	 .bash_profile and .bashrc are interpreted. */
       get_tty_state ();
     }
+
+#ifdef __APPLE__
+  if (interactive_shell && !act_like_sh) {
+      char const * const silence_warning = getenv("BASH_SILENCE_DEPRECATION_WARNING");
+      if (!silence_warning || *silence_warning != '1') {
+          struct stat sbuf;
+          if (stat("/bin/zsh", &sbuf) == 0) {
+              fprintf(stderr, "\n"
+                              "The default interactive shell is now zsh.\n"
+                              "To update your account to use zsh, please run `chsh -s /bin/zsh`.\n"
+                              "For more details, please visit https://support.apple.com/kb/HT208050.\n");
+          }
+      }
+  }
+#endif
 
 #if !defined (ONESHOT)
  read_and_execute:
@@ -1795,7 +1815,7 @@ show_shell_usage (fp, extra)
     {
       fprintf (fp, _("Type `%s -c \"help set\"' for more information about shell options.\n"), shell_name);
       fprintf (fp, _("Type `%s -c help' for more information about shell builtin commands.\n"), shell_name);
-      fprintf (fp, _("Use the `bashbug' command to report bugs.\n"));
+      fprintf (fp, "%s", _("Use the `bashbug' command to report bugs.\n"));
     }
 }
 
