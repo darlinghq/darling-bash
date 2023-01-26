@@ -63,7 +63,7 @@
 #endif
 
 /* Default primary and secondary prompt strings. */
-#define PPROMPT "Darling [\\w]\\$ "
+#define PPROMPT "\\s-\\v\\$ "
 #define SPROMPT "> "
 
 /* Undefine this if you don't want the ksh-compatible behavior of reprinting
