@@ -244,7 +244,7 @@ install(TARGETS bash DESTINATION libexec/darling/bin)
 set(BINARY_PACKAGING_MODE ON)
 InstallSymlink(bash libexec/darling/bin/sh)
 
-install(FILES bashrc profile DESTINATION libexec/darling/etc)
+install(FILES bashrc profile DESTINATION libexec/darling/private/etc)
 
 set(man1
 	bash-3.2/doc/bash.1
