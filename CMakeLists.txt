@@ -27,6 +27,14 @@ add_compile_definitions(
 	CONF_OSTYPE="darwin19"
 )
 
+if (TARGET_ARM64)
+	add_compile_definitions(CONF_HOSTTYPE="aarch64")
+elseif (TARGET_x86_64)
+	add_compile_definitions(CONF_HOSTTYPE="x86_64")
+elseif (TARGET_i386)
+	add_compile_definitions(CONF_HOSTTYPE="i386")
+endif ()
+
 include_directories(BEFORE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_CURRENT_BINARY_DIR}
