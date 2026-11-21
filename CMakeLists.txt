@@ -27,13 +27,15 @@ add_compile_definitions(
 	CONF_OSTYPE="darwin19"
 )
 
-if (TARGET_ARM64)
-	add_compile_definitions(CONF_HOSTTYPE="aarch64")
-elseif (TARGET_x86_64)
-	add_compile_definitions(CONF_HOSTTYPE="x86_64")
-elseif (TARGET_i386)
-	add_compile_definitions(CONF_HOSTTYPE="i386")
-endif ()
+# The host type of each slice
+foreach (arch IN LISTS DARLING_ARCHS)
+	if (arch STREQUAL "arm64")
+		set(bash_hosttype "aarch64")
+	else ()
+		set(bash_hosttype "${arch}")
+	endif ()
+	add_compile_options("SHELL:-Xarch_${arch} -DCONF_HOSTTYPE=\\\"${bash_hosttype}\\\"")
+endforeach ()
 
 include_directories(BEFORE
 	${CMAKE_CURRENT_SOURCE_DIR}
